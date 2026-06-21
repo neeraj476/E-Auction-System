@@ -1,10 +1,12 @@
 import express from "express";
-import notificationRoutes from "./routes/notificationRoutes.js";
+import {
+  sendAuctionEndedEmail,
+  sendOutbidEmail,
+} from "../controllers/notificationController.js";
 
-const app = express();
+const router = express.Router();
 
-app.use(express.json());
+router.post("/auction-ended", sendAuctionEndedEmail);
+router.post("/outbid", sendOutbidEmail);
 
-app.use("/api/notifications", notificationRoutes);
-
-export default app;
+export default router;

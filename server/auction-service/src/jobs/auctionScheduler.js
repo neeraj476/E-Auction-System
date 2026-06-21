@@ -4,6 +4,8 @@ import {
   closeAuction,
 } from "../models/auctionModel.js";
 import { getHighestBid } from "../models/bidModel.js";
+import { getUserEmailById } from "../services/userService.js";
+import { notifyAuctionEnded } from "../services/notificationService.js";
 
 export const startAuctionScheduler = () => {
   cron.schedule("* * * * *", async () => {
@@ -20,6 +22,18 @@ export const startAuctionScheduler = () => {
           console.log(
             `Auction ${auction.id} closed. Winner: user ${winnerId} at $${winningBid.amount}`,
           );
+
+          const [sellerEmail, winnerEmail] = await Promise.all([
+            getUserEmailById(auction.seller_id),
+            getUserEmailById(winnerId),
+          ]);
+
+          await notifyAuctionEnded({
+            winnerEmail,
+            sellerEmail,
+            auctionTitle: auction.title,
+            finalPrice: winningBid.amount,
+          });
         } else {
           console.log(`Auction ${auction.id} closed. No bids were placed.`);
         }

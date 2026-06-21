@@ -18,13 +18,18 @@ const port = process.env.PORT;
 const startServer = async () => {
   try {
     const connection = await pool.getConnection();
+
     console.log("MYSQL connected successfully");
+
     connection.release();
 
     await createAuctionsTable();
-    await createBidsTable(); // must come after auctions table — bids has a FK to it
+    await createBidsTable();
 
-    console.log(`auction-service running on port ${port}`);
+    app.listen(port, () => {
+      console.log(`auction-service running on port ${port}`);
+    });
+
     startAuctionScheduler();
   } catch (error) {
     console.log(error.message);
