@@ -29,11 +29,20 @@ export const createAuction = async (
   description,
   startingPrice,
   endTime,
+  imageUrl,
 ) => {
   const [result] = await pool.query(
-    `INSERT INTO auctions (seller_id, title, description, starting_price, current_price, end_time)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [sellerId, title, description, startingPrice, startingPrice, endTime],
+    `INSERT INTO auctions (seller_id, title, description, starting_price, current_price, end_time, image_url)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [
+      sellerId,
+      title,
+      description,
+      startingPrice,
+      startingPrice,
+      endTime,
+      imageUrl,
+    ],
   );
   return result.insertId;
 };
@@ -57,8 +66,11 @@ export const updateAuctionPrice = async (id, newPrice) => {
   ]);
 };
 
-export const closeAuction = async (id) => {
-  await pool.query("UPDATE auctions SET status = 'closed' WHERE id = ?", [id]);
+export const closeAuction = async (id, winnerId = null) => {
+  await pool.query(
+    "UPDATE auctions SET status = 'closed', winner_id = ? WHERE id = ?",
+    [winnerId, id],
+  );
 };
 
 export const getExpiredActiveAuctions = async () => {

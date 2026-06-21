@@ -9,8 +9,8 @@ import {
 export const createAuctionHandler = async (req, res) => {
   try {
     const { title, description, startingPrice, endTime } = req.body;
-    console.log(req.user);
     const sellerId = req.user.id;
+    const imageUrl = req.file ? req.file.path : null; // multer-storage-cloudinary puts the hosted URL here
 
     if (!title || !startingPrice || !endTime) {
       return res
@@ -42,17 +42,17 @@ export const createAuctionHandler = async (req, res) => {
       description,
       startingPrice,
       parsedEndTime,
+      imageUrl,
     );
 
     res
       .status(201)
-      .json({ message: "Auction created successfully", auctionId });
+      .json({ message: "Auction created successfully", auctionId, imageUrl });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "Server error" });
   }
 };
-
 export const getAuctions = async (req, res) => {
   try {
     const auctions = await getAllAuctions();
