@@ -166,7 +166,7 @@ PORT=8001
 JWT_SECRET=        # must match auth-service exactly
 MIN_BID_INCREMENT=1.00
 ```
-
+notification-service
 **`notification-service/.env`**
 
 PORT=8002
@@ -176,3 +176,5 @@ SMTP_USER=
 SMTP_PASS=
 SMTP_FROM=
 INTERNAL_API_KEY=  # must match whatever auction-service uses to call this service
+
+
