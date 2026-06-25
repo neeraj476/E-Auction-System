@@ -4,6 +4,7 @@ A microservices-based online auction platform built with Node.js, Express, and M
 
 ## Architecture
 
+
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌────────────────────┐
 │   auth-service   │     │  auction-service  │     │ notification-service│
