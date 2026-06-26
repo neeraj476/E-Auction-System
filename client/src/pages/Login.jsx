@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/authApi";
-import {useAuth} from "../context/AuthContext";
-
-
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +9,8 @@ const Login = () => {
   const [formError, setFormError] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const {login} = useAuth();
+  const { login } = useAuth();
   const { fetchUser } = useAuth();
-
-
 
   const navigate = useNavigate();
 
@@ -29,11 +25,13 @@ const Login = () => {
       return;
     }
 
+    
+
     try {
       setLoading(true);
       // console.log(email,password);
 
-      const response = await loginUser(email,password)
+      const response = await loginUser(email, password);
       login(response.user);
       await fetchUser();
 
