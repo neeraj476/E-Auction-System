@@ -12,6 +12,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const {login} = useAuth();
+  const { fetchUser } = useAuth();
 
 
 
@@ -34,7 +35,7 @@ const Login = () => {
 
       const response = await loginUser(email,password)
       login(response.user);
-      console.log(response.user);
+      await fetchUser();
 
       navigate("/");
     } catch (err) {

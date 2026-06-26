@@ -12,13 +12,13 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(cookieParser());
 
+
+
+app.use("/", auctionRoutes);
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.originalUrl}`);
   next();
 });
-
-app.use("/", auctionRoutes);
-
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR HANDLER:", err);
   res.status(500).json({ message: err.message });

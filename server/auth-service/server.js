@@ -14,7 +14,10 @@ app.use((req, res, next) => {
 });
 
 app.use("/", authRoutes);
-
+app.use((err, req, res, next) => {
+  console.error("GLOBAL ERROR HANDLER:", err);
+  res.status(500).json({ message: err.message });
+});
 const port = process.env.PORT;
 
 const startServer = async () => {

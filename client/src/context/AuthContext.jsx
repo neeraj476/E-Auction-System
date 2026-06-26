@@ -22,6 +22,9 @@ export const AuthProvider = ({ children }) => {
     await loginUser(email, password);
     await fetchUser();
   };
+  const refreshUser = async () => {
+    await fetchUser();
+  };
 
   const logout = async () => {
     try {

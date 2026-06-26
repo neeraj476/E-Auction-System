@@ -15,9 +15,9 @@ export const startAuctionScheduler = () => {
       for (const auction of expiredAuctions) {
         const winningBid = await getHighestBid(auction.id);
         const winnerId = winningBid ? winningBid.bidder_id : null;
-
+        console.log("scheduler");
         await closeAuction(auction.id, winnerId);
-
+        
         if (winningBid) {
           console.log(
             `Auction ${auction.id} closed. Winner: user ${winnerId} at $${winningBid.amount}`,

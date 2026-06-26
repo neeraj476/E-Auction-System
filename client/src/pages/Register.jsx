@@ -4,6 +4,7 @@ import {useAuth} from "../context/AuthContext";
 import { registerUser } from "../services/authApi";
 const Register = () => {
   const [name, setName] = useState("");
+  const { fetchUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,13 +27,13 @@ const Register = () => {
     }
 
      const data =  await registerUser(name,email,password);
-    login(data.user);
+      await fetchUser();
 
     console.log({
       data
     });
 
-    navigate("/login");
+    navigate("/");
   };
 
   return (
