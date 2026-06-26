@@ -8,9 +8,16 @@ import authRoutes from "./src/routes/authRoutes.js";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use((req, res, next) => {
+  console.log("AUTH SERVICE:", req.method, req.originalUrl);
+  next();
+});
 
-app.use("/api/auth", authRoutes);
-
+app.use("/", authRoutes);
+app.use((err, req, res, next) => {
+  console.error("GLOBAL ERROR HANDLER:", err);
+  res.status(500).json({ message: err.message });
+});
 const port = process.env.PORT;
 
 const startServer = async () => {

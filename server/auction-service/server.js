@@ -9,22 +9,38 @@ import { startAuctionScheduler } from "./src/jobs/auctionScheduler.js";
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded());
 app.use(cookieParser());
 
-app.use("/api/auctions", auctionRoutes);
+
+
+app.use("/", auctionRoutes);
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
+app.use((err, req, res, next) => {
+  console.error("GLOBAL ERROR HANDLER:", err);
+  res.status(500).json({ message: err.message });
+});
 
 const port = process.env.PORT;
 
 const startServer = async () => {
   try {
     const connection = await pool.getConnection();
+
     console.log("MYSQL connected successfully");
+
     connection.release();
 
     await createAuctionsTable();
-    await createBidsTable(); // must come after auctions table — bids has a FK to it
+    await createBidsTable();
 
-    console.log(`auction-service running on port ${port}`);
+    app.listen(port, () => {
+      console.log(`auction-service running on port ${port}`);
+    });
+
     startAuctionScheduler();
   } catch (error) {
     console.log(error.message);

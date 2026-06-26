@@ -92,3 +92,12 @@ export const cancelAuction = async (id) => {
     id,
   ]);
 };
+
+
+export const getAuctionsBySeller = async (sellerId) => {
+  const [rows] = await pool.query(
+    "SELECT * FROM auctions WHERE seller_id = ? ORDER BY created_at DESC",
+    [sellerId]
+  );
+  return rows;
+};
